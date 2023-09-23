@@ -1,12 +1,13 @@
 package aplicacion;
 
+import excepciones.NumeroImparException;
 import logica.Problemas;
 
 public class Main {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		int n = 10;
+		int n = 21;
 		long startTime = System.nanoTime();
 
 		Problemas problemas = new Problemas();
@@ -16,7 +17,7 @@ public class Main {
 		long endTime = System.nanoTime();
 		long duration = (endTime - startTime) / 1000000; // Tiempo en milisegundos
 
-		System.out.println("Tiempo de ejecución: " + duration + " milisegundos");
+		System.out.println("\t"+"Tiempo de ejecución problema 4.1 Iterativo: " + duration + " milisegundos"+"\n");
 
 		startTime = System.nanoTime();
 
@@ -27,6 +28,19 @@ public class Main {
 		endTime = System.nanoTime();
 		duration = (endTime - startTime) / 1000000; // Tiempo en milisegundos
 
-		System.out.println("Tiempo de ejecución: " + duration + " milisegundos");
+		System.out.println("\t"+"Tiempo de ejecución problema 4.1 Recursivo: " + duration + " milisegundos"+"\n");
+		
+		startTime = System.nanoTime();
+		
+		try {
+			problemas.llenarMatrizCuatroDos(n);
+		} catch (NumeroImparException e) {
+			System.out.println("Se ha producido una excepción: " + e.getMessage());
+		}
+		
+		endTime = System.nanoTime();
+		duration = (endTime - startTime) / 1000000; // Tiempo en milisegundos
+
+		System.out.println("\t"+"Tiempo de ejecución problema 4.2 Iterativo: " + duration + " milisegundos");
 	}
 }

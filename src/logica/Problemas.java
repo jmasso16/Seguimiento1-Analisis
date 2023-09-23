@@ -1,20 +1,22 @@
 package logica;
 
+import excepciones.NumeroImparException;
+
 public class Problemas {
 	/**
 	 * Metodo iterativo que llena los sectores de la matriz segun la estructura
 	 * presentada en el Problema 4.1 Dicha estructura esta dada por lo siguiente:
-	 * Inicialmente vemos que la matriz generada es de tamaño [n][2*N] , lo que
-	 * interpetamos como tener dos matrices d tamaño [n][n], una matriz izquierda y
+	 * Inicialmente vemos que la matriz generada es de tamaño [n][2*n] , lo que
+	 * interpetamos como tener dos matrices de tamaño [n][n], una matriz izquierda y
 	 * otra derecha. Tambien observamos que la forma de llenar la matriz es
 	 * iniciando con potencias del numero dos en la columna 0, luego valores vacios
 	 * o 0, este comportamiento se repite hasta llenar la parte izquierda de la
 	 * matriz. Luego llena la parte derecha de la matriz como un espejo.
 	 * Adicionalmente para llenar las columnas que tendran las potencias de dos hace
 	 * el siguiente comportamiento: A la primera fila no le pone vacios, la
-	 * siguiente pone un vacio iniciando y otro terminando,y aumente esos vacios de
-	 * 1 en 1 hasta llegar al final de la aprte izquierda de la matriz.Este
-	 * comportamiento igualemnte lo refleja a la parte derecha en espejo.
+	 * siguiente pone un vacio iniciando y otro terminando,y aumenta esos vacios de
+	 * 1 en 1 hasta llegar al final de la parte izquierda de la matriz.Este
+	 * comportamiento igualmente lo refleja a la parte derecha en espejo.
 	 * 
 	 * @param n El parametro n define el tamaño de la matriz necesaria para
 	 *          almacenar los numeros segun dicha estructura
@@ -80,17 +82,17 @@ public class Problemas {
 	/**
 	 * Metodo recursivo que llena los sectores de la matriz segun la estructura
 	 * presentada en el Problema 4.1 Dicha estructura esta dada por lo siguiente:
-	 * Inicialmente vemos que la matriz generada es de tamaño [n][2*N] , lo que
-	 * interpetamos como tener dos matrices d tamaño [n][n], una matriz izquierda y
+	 * Inicialmente vemos que la matriz generada es de tamaño [n][2*n] , lo que
+	 * interpetamos como tener dos matrices de tamaño [n][n], una matriz izquierda y
 	 * otra derecha. Tambien observamos que la forma de llenar la matriz es
 	 * iniciando con potencias del numero dos en la columna 0, luego valores vacios
 	 * o 0, este comportamiento se repite hasta llenar la parte izquierda de la
 	 * matriz. Luego llena la parte derecha de la matriz como un espejo.
 	 * Adicionalmente para llenar las columnas que tendran las potencias de dos hace
 	 * el siguiente comportamiento: A la primera fila no le pone vacios, la
-	 * siguiente pone un vacio iniciando y otro terminando,y aumente esos vacios de
-	 * 1 en 1 hasta llegar al final de la aprte izquierda de la matriz.Este
-	 * comportamiento igualemnte lo refleja a la parte derecha en espejo.
+	 * siguiente pone un vacio iniciando y otro terminando,y aumenta esos vacios de
+	 * 1 en 1 hasta llegar al final de la parte izquierda de la matriz.Este
+	 * comportamiento igualmente lo refleja a la parte derecha en espejo.
 	 * 
 	 * @param matriz   Matriz inicializada como [n][2*n]
 	 * @param n        El parametro n define el tamaño de la matriz necesaria para
@@ -179,6 +181,58 @@ public class Problemas {
 			}
 			System.out.println();
 		}
+	}
+
+	/**
+	 * Metodo iterativo que llena los sectores de la matriz segun la estructura
+	 * presentada en el Problema 4.2 Dicha estructura esta dada por lo siguiente:
+	 * Inicialmente vemos que la matriz generada es de tamaño [n][n] donde n debe
+	 * ser un numero impar. Tambien observamos que la forma de llenar la matriz es
+	 * iniciando con potencias del numero dos en la columna 0,las potencias inician
+	 * por 2 ^ (n-1) y disminuyen a medida que se llena la columna, luego valores
+	 * vacios o 0, este comportamiento se repite hasta llenar la matriz.
+	 * Adicionalmente para llenar las columnas que tendran las potencias de dos hace
+	 * el siguiente comportamiento: A la primera fila no le pone vacios, la
+	 * siguiente pone un vacio iniciando y otro terminando,y aumenta esos vacios de
+	 * 1 en 1 hasta llegar al final de la matriz.
+	 * 
+	 * @param n El parametro n define el tamaño de la matriz necesaria para
+	 *          almacenar los numeros segun dicha estructura
+	 */
+	public void llenarMatrizCuatroDos(int n) throws NumeroImparException{
+		if(n%2 != 1) {
+			throw new NumeroImparException("El número n debe ser impar.");
+		}
+		int[][] matriz = new int[n][n];
+		int potencia = 0;
+		// Iteramos a través de las columnas de la matriz
+		for (int i = 0; i < matriz[0].length; i++) {
+			if (i % 2 == 0) {// Columnas pares
+				if (i > 0) {
+					potencia = (n - 1);
+					// Llenar la matriz con potencias de 2
+					for (int j = i / 2; j < matriz.length - (i / 2); j++) {
+						matriz[j][i] = (int) Math.pow(2, potencia);
+						potencia--;
+					}
+				} else {
+					potencia = (n - 1);
+					// Llenar la primera columna de la matriz con potencias de 2
+					for (int j = 0; j < matriz.length; j++) {
+						matriz[j][i] = (int) Math.pow(2, potencia);
+						potencia--;
+					}
+				}
+			}
+		}
+
+		for (int i = 0; i < matriz.length; i++) {
+			for (int j = 0; j < matriz[0].length; j++) {
+				System.out.print(matriz[i][j] + "\t");
+			}
+			System.out.println();
+		}
+
 	}
 
 }
