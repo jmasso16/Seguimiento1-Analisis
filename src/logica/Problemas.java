@@ -235,4 +235,75 @@ public class Problemas {
 
 	}
 
+	public void llenarMatrizCuatroDosRecursiva(int n) throws NumeroImparException {
+		if (n % 2 != 1) {
+			throw new NumeroImparException("El número n debe ser impar.");
+		}
+	
+		int[][] matriz = new int[n][n];
+		llenarMatrizRecursiva(matriz, n, 0, 0);
+	
+		// Imprimir la matriz (opcional)
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				System.out.print(matriz[i][j] + "\t");
+			}
+			System.out.println();
+		}
+	}
+	
+	/**
+	 * Metodo iterativo que llena los sectores de la matriz segun la estructura
+	 * presentada en el Problema 4.2 Dicha estructura esta dada por lo siguiente:
+	 * Inicialmente vemos que la matriz generada es de tamaño [n][n] donde n debe
+	 * ser un numero impar. Tambien observamos que la forma de llenar la matriz es
+	 * iniciando con potencias del numero dos en la columna 0,las potencias inician
+	 * por 2 ^ (n-1) y disminuyen a medida que se llena la columna, luego valores
+	 * vacios o 0, este comportamiento se repite hasta llenar la matriz.
+	 * Adicionalmente para llenar las columnas que tendran las potencias de dos hace
+	 * el siguiente comportamiento: A la primera fila no le pone vacios, la
+	 * siguiente pone un vacio iniciando y otro terminando,y aumenta esos vacios de
+	 * 1 en 1 hasta llegar al final de la matriz.
+	 * 
+	 * @param matriz   Matriz inicializada como [n][n]
+	 * @param n        El parametro n define el tamaño de la matriz necesaria para
+	 *                 almacenar los numeros segun dicha estructura
+	 * @param i        Indice para desplazarce en las columnas
+	 * @param potencia Valor por el cual se va a elevar el numero 2
+	 */
+	public void llenarMatrizRecursiva(int[][] matriz, int n, int i, int potencia) {
+		// Comprueba si hemos llegado al final de las columnas de la matriz
+		if (i >= matriz[0].length) {
+			return;// Si es así, termina la recursión
+		}
+		// Si la columna es par
+		if (i % 2 == 0) {
+			// Si no es la primera columna
+			if (i > 0) {
+				// Inicializa una variable temporal para la potencia
+				int tempPotencia = n-1;
+				// Llena la matriz con potencias de 2 despues de la primera columna
+				for (int j = i / 2; j < matriz.length - (i / 2); j++) {
+					matriz[j][i] = (int) Math.pow(2, tempPotencia);
+					tempPotencia--;
+				}
+				// Llama recursivamente a la función para la siguiente columna
+				llenarMatrizRecursiva(matriz, n, i + 1, tempPotencia);
+			} else {
+				 int tempPotencia = n-1;
+				// Llena la primera columna de la matriz con potencias de 2
+				for (int j = 0; j < matriz.length; j++) {
+					matriz[j][i] = (int) Math.pow(2, tempPotencia);
+					tempPotencia--;
+				}
+				// Llama recursivamente a la función para la siguiente columna
+				llenarMatrizRecursiva(matriz, n, i + 1, potencia);
+			}
+			// Si la columna es menor que n, pero no es par
+		} else if (i < n) {
+			// Llama recursivamente a la función para la siguiente columna
+			llenarMatrizRecursiva(matriz, n, i + 1, potencia);
+		}
+	
+	}	
 }

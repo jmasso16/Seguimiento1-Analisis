@@ -7,7 +7,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		int n = 21;
+		int n = 10;
 		long startTime = System.nanoTime();
 
 		Problemas problemas = new Problemas();
@@ -30,6 +30,7 @@ public class Main {
 
 		System.out.println("\t"+"Tiempo de ejecución problema 4.1 Recursivo: " + duration + " milisegundos"+"\n");
 		
+		//4.2 Iterativo
 		startTime = System.nanoTime();
 		
 		try {
@@ -42,5 +43,19 @@ public class Main {
 		duration = (endTime - startTime) / 1000000; // Tiempo en milisegundos
 
 		System.out.println("\t"+"Tiempo de ejecución problema 4.2 Iterativo: " + duration + " milisegundos");
+
+		// 4.2 Recursivo
+		startTime = System.nanoTime();
+		
+		try {
+			problemas.llenarMatrizCuatroDosRecursiva(n);
+		} catch (NumeroImparException e) {
+			System.out.println("Se ha producido una excepción: " + e.getMessage());
+		}
+		
+		endTime = System.nanoTime();
+		duration = (endTime - startTime) / 1000000; // Tiempo en milisegundos
+
+		System.out.println("\t"+"Tiempo de ejecución problema 4.2 Recursivo: " + duration + " milisegundos");
 	}
 }
