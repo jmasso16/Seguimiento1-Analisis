@@ -1,5 +1,8 @@
 package logica;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import excepciones.NumeroImparException;
 
 public class Problemas {
@@ -21,7 +24,7 @@ public class Problemas {
 	 * @param n El parametro n define el tamaño de la matriz necesaria para
 	 *          almacenar los numeros segun dicha estructura
 	 */
-	public void llenarMatrizCuatroUno(int n) {
+	public int[][] llenarMatrizCuatroUno(int n) {
 		int[][] matriz = new int[n][2 * n];
 		int contador = 0;
 		int potencia = 0;
@@ -69,14 +72,7 @@ public class Problemas {
 			}
 
 		}
-
-		for (int i = 0; i < matriz.length; i++) {
-			for (int j = 0; j < matriz[0].length; j++) {
-				System.out.print(matriz[i][j] + "\t");
-			}
-			System.out.println();
-		}
-
+		return matriz;
 	}
 
 	/**
@@ -199,7 +195,7 @@ public class Problemas {
 	 * @param n El parametro n define el tamaño de la matriz necesaria para
 	 *          almacenar los numeros segun dicha estructura
 	 */
-	public void llenarMatrizCuatroDos(int n) throws NumeroImparException{
+	public int[][] llenarMatrizCuatroDos(int n) throws NumeroImparException{
 		if(n%2 != 1) {
 			throw new NumeroImparException("El número n debe ser impar.");
 		}
@@ -225,14 +221,7 @@ public class Problemas {
 				}
 			}
 		}
-
-		for (int i = 0; i < matriz.length; i++) {
-			for (int j = 0; j < matriz[0].length; j++) {
-				System.out.print(matriz[i][j] + "\t");
-			}
-			System.out.println();
-		}
-
+		return matriz;
 	}
 
 	public void llenarMatrizCuatroDosRecursiva(int n) throws NumeroImparException {
@@ -304,6 +293,167 @@ public class Problemas {
 			// Llama recursivamente a la función para la siguiente columna
 			llenarMatrizRecursiva(matriz, n, i + 1, potencia);
 		}
-	
+
 	}	
+
+	//////////////
+
+	// Encuentra los números de Smith en una matriz y los almacena en una lista.
+	public static List<Integer> encontrarNumerosDeSmithEnMatriz(int[][] matriz) {
+		List<Integer> numerosDeSmith = new ArrayList<>();
+
+		for (int[] fila : matriz) {
+			for (int numero : fila) {
+				// Verifica si el número no es primo y es un número de Smith.
+				if (!esPrimo(numero) && esNumeroDeSmith(numero)) {
+					numerosDeSmith.add(numero);
+				}
+			}
+		}
+
+		return numerosDeSmith;
+	}
+
+	// Verifica si un número es un número de Smith.
+	public static boolean esNumeroDeSmith(int numero) {
+		// Calcula la suma de los dígitos del número.
+		int sumaDigitos = sumarDigitos(numero);
+		// Calcula la suma de los dígitos de sus divisores primos.
+		int sumaDivisoresPrimos = sumarDivisoresPrimos(numero);
+
+		// Compara si ambas sumas son iguales.
+		return sumaDigitos == sumaDivisoresPrimos;
+	}
+
+	// Suma los dígitos de un número.
+	public static int sumarDigitos(int numero) {
+		int suma = 0;
+
+		while (numero > 0) {
+			suma += numero % 10;
+			numero /= 10;
+		}
+
+		return suma;
+	}
+
+	// Suma los dígitos de los divisores primos de un número.
+	public static int sumarDivisoresPrimos(int numero) {
+		int suma = 0;
+
+		for (int i = 2; i <= numero; i++) {
+			while (numero % i == 0 && esPrimo(i)) {
+				suma += sumarDigitos(i);
+				numero /= i;
+			}
+		}
+
+		return suma;
+	}
+
+	// Verifica si un número es primo.
+	public static boolean esPrimo(int numero) {
+		if (numero <= 1) {
+			return false;
+		}
+
+		for (int i = 2; i * i <= numero; i++) {
+			if (numero % i == 0) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+
+	/////////////////////
+
+	public static List<Integer> encontrarNumerosDeSmithEnMatrizRecursivo(int[][] matriz, int fila, int columna) {
+        List<Integer> numerosDeSmith = new ArrayList<>();
+
+        // Caso base: cuando llegamos al final de la matriz
+        if (fila >= matriz.length) {
+            return numerosDeSmith;
+        }
+
+        // Verifica si el número no es primo y es un número de Smith.
+        if (!esPrimoRecursivo(matriz[fila][columna], 2) && esNumeroDeSmithRecursivo2(matriz[fila][columna])) {
+            numerosDeSmith.add(matriz[fila][columna]);
+        }
+
+        // Avanza a la siguiente columna o fila de manera recursiva
+        int nuevaFila = fila;
+        int nuevaColumna = columna + 1;
+        if (nuevaColumna >= matriz[0].length) {
+            nuevaFila++;
+            nuevaColumna = 0;
+        }
+
+        // Llamada recursiva para procesar el siguiente elemento de la matriz
+        numerosDeSmith.addAll(encontrarNumerosDeSmithEnMatrizRecursivo(matriz, nuevaFila, nuevaColumna));
+
+        return numerosDeSmith;
+    }
+
+	public static int sumarDigitosRecursivo(int numero) {
+		// Caso base: si el número tiene un solo dígito, se devuelve ese dígito.
+		if (numero < 10) {
+			return numero;
+		} else {
+			// Se suma el último dígito (numero % 10) y se realiza una llamada recursiva
+			// para sumar los dígitos restantes (numero / 10).
+			return numero % 10 + sumarDigitosRecursivo(numero / 10);
+		}
+	}
+	
+	// Calcula la suma de los dígitos de los divisores primos de un número de manera recursiva.
+	public static int sumarDivisoresPrimosRecursivo(int numero, int divisor, int suma) {
+		// Caso base: cuando el número llega a 1, se devuelve la suma acumulada.
+		if (numero == 1) {
+			return suma;
+		} else if (numero % divisor == 0 && esPrimoRecursivo(divisor, 2)) {
+			// Si el número es divisible por el divisor actual y el divisor es primo,
+			// se suma la suma acumulada con la suma de los dígitos del divisor y se
+			// realiza una llamada recursiva con el número dividido por el divisor.
+			return sumarDivisoresPrimosRecursivo(numero / divisor, divisor, suma + sumarDigitosRecursivo(divisor));
+		} else {
+			// Si no se cumple la condición anterior, se pasa al siguiente divisor
+			// de manera recursiva.
+			return sumarDivisoresPrimosRecursivo(numero, divisor + 1, suma);
+		}
+	}
+	
+	// Verifica si un número es primo de manera recursiva.
+	public static boolean esPrimoRecursivo(int numero, int divisor) {
+		// Caso base: si el número es menor o igual a 1, no es primo.
+		if (numero <= 1) {
+			return false;
+		}
+	
+		// Si el divisor al cuadrado es mayor que el número, el número es primo.
+		if (divisor * divisor > numero) {
+			return true;
+		}
+	
+		// Si el número es divisible por el divisor actual, no es primo.
+		if (numero % divisor == 0) {
+			return false;
+		}
+	
+		// Llamada recursiva para probar el siguiente divisor.
+		return esPrimoRecursivo(numero, divisor + 1);
+	}
+	
+	// Verifica si un número es un número de Smith de manera recursiva.
+	public static boolean esNumeroDeSmithRecursivo2(int numero) {
+		// Calcula la suma de los dígitos del número y la suma de los dígitos de sus
+		// divisores primos utilizando las funciones recursivas previamente definidas.
+		int sumaDigitos = sumarDigitosRecursivo(numero);
+		int sumaDivisoresPrimos = sumarDivisoresPrimosRecursivo(numero, 2, 0);
+	
+		// Compara si ambas sumas son iguales.
+		return sumaDigitos == sumaDivisoresPrimos;
+	}
+	
 }
