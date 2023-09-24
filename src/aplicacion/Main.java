@@ -111,5 +111,14 @@ public class Main {
         duration = (endTime - startTime) / 1000000; // Tiempo en milisegundos
 
         System.out.println("\t"+"Tiempo de ejecución problema 4.5 Iterativo: " + duration + " milisegundos");
+
+		startTime = System.nanoTime();
+
+        problemas.estrella2(filas, columnas);
+
+        endTime = System.nanoTime();
+        duration = (endTime - startTime) / 1000000; // Tiempo en milisegundos
+
+        System.out.println("\t"+"Tiempo de ejecución problema 4.5 Recursivo: " + duration + " milisegundos");
 	}
 }

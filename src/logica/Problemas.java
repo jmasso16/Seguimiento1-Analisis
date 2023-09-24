@@ -475,41 +475,33 @@ public class Problemas {
             }
         }
 
-        int centroFila = filas / 2;
+		int centroFila = filas / 2;
         int centroColumna = columnas / 2;
 
-		// Cambios para izquiera arriba
-        for (int k = 0; k < centroFila-1; k++) {
+        // llena arriba
+       for (int k = 0; k < centroFila-1; k++) {
             for (int i = 1; i < centroFila-1; i++) {
-                for (int j = 1; j < centroColumna-k; j++) {
-                    matriz[i][j] = '1';
+                for (int j = 1; j < matriz[0].length-1; j++) {
+                    if(j < centroColumna-k){
+                        matriz[i][j] = '1';
+                    }
+                    if(j> centroColumna+k ){
+                        matriz[i][j] = '1';
+                    }
                 }
                 k++;
             }
         }
-		// Cambios para derecha arriba
-        for (int k = 1; k < centroFila-1; k++) {
-            for (int i = 1; i < centroFila-1; i++) {
-                for (int j = centroColumna+k; j < matriz[0].length-1; j++) {
-                    matriz[i][j] = '1';
-                }
-                k++;
-            }
-        }
-        // Cambios para izquierda abajo
+        // llena abajo
         for (int k = centroFila-2; k > 1; k--) {
             for (int i = centroFila+1; i < matriz.length-1; i++) {
-                for (int j = 1; j < centroColumna-k; j++) {
-                    matriz[i][j] = '1';
-                }
-                k--;
-            }
-        }
-		// Cambios para derecha abajo
-        for (int k = centroFila-2; k > 1; k--) {
-            for (int i = centroFila+2; i < matriz.length-1; i++) {
-                for (int j = centroColumna+k; j < matriz[0].length-1; j++) {
-                    matriz[i][j] = '1';
+                for (int j = 1; j < matriz[0].length-1; j++) {
+                    if(j < centroColumna-k){
+                        matriz[i][j] = '1';
+                    }
+                    if(j> centroColumna+k ){
+                        matriz[i][j] = '1';
+                    }
                 }
                 k--;
             }
@@ -527,5 +519,85 @@ public class Problemas {
 		
     }
 	
-	
+	public  void llenarArribaRecursivo(char[][] matriz, int centroFila, int centroColumna, int k, int i, int j) {
+        // Caso base: detener la recursión cuando k sea mayor o igual a centroFila.
+        if (k >= centroFila) {
+            return;
+        }
+
+        // Llenar la parte superior de la matriz en la posición actual (i, j).
+
+        //parte izquierda
+        if(j < centroColumna-k){
+            matriz[i][j] = '1';
+        }
+
+        //parte derecha
+        if(j> centroColumna+k ){
+            matriz[i][j] = '1';
+        }
+
+        // Llamar recursivamente para la siguiente posición.
+        if (j < matriz[0].length - 2) {
+            llenarArribaRecursivo(matriz, centroFila, centroColumna, k, i, j + 1);
+        } else {
+            // Cambiar de fila y reiniciar j al principio de la fila.
+            llenarArribaRecursivo(matriz, centroFila, centroColumna, k+1, i + 1, 1);
+        }
+    }
+
+    public  void llenarAbajoRecursivo(char[][] matriz, int centroFila, int centroColumna, int k, int i, int j) {
+        // Caso base: detener la recursión cuando k sea menor a 0.
+        if (k < 0) {
+            return;
+        }
+
+        // Llenar la parte inferior de la matriz en la posición actual (i, j).
+
+        //parte izquierda
+        if(j < centroColumna-k){
+            matriz[i][j] = '1';
+        }
+
+        //parte derecha
+        if(j> centroColumna+k ){
+            matriz[i][j] = '1';
+        }
+
+        // Llamar recursivamente para la siguiente posición.
+        if (j < matriz[0].length - 2) {
+            llenarAbajoRecursivo(matriz, centroFila, centroColumna, k, i, j + 1);
+        } else {
+            // Cambiar de fila y reiniciar j al principio de la fila.
+            llenarAbajoRecursivo(matriz, centroFila, centroColumna, k-1, i + 1, 1);
+        }
+    }
+
+    public  void estrella2(int filas, int columnas) {
+        char[][] matriz = new char[filas][columnas];
+
+        for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < columnas; j++) {
+                if (i == 0 || i == filas - 1 || j == 0 || j == columnas - 1) {
+                    matriz[i][j] = '1';
+                }
+            }
+        }
+
+
+        int centroFila = filas / 2;
+        int centroColumna = columnas / 2;
+
+        // Llamar a las funciones recursivas para llenar la parte superior e inferior.
+        llenarArribaRecursivo(matriz, centroFila - 1, centroColumna, 0, 1, 1);
+        llenarAbajoRecursivo(matriz, centroFila - 2, centroColumna, centroFila - 2, centroFila + 1, 1);
+
+        // Imprimir la matriz resultante.
+        for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < columnas; j++) {
+                System.out.print(matriz[i][j]);
+            }
+            System.out.println();
+        }
+    }
 }
