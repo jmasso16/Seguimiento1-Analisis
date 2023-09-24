@@ -87,8 +87,11 @@ public class Main {
 
 		//recursivo
 		startTime = System.nanoTime();
-
-		int[][] matriz2 = problemas.llenarMatrizCuatroUno(n);
+		int[][] matriz2 = {
+	            {4, 6, 27, 22},
+	            {9, 15, 33, 8},
+	            {7, 25, 12, 10}
+	        };
         List<Integer> numerosDeSmith2 = problemas.encontrarNumerosDeSmithEnMatrizRecursivo(matriz2, 0, 0);
         System.out.println("Números de Smith en la matriz: " + numerosDeSmith2);
 		

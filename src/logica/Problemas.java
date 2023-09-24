@@ -299,7 +299,7 @@ public class Problemas {
 	//////////////
 
 	// Encuentra los números de Smith en una matriz y los almacena en una lista.
-	public static List<Integer> encontrarNumerosDeSmithEnMatriz(int[][] matriz) {
+	public List<Integer> encontrarNumerosDeSmithEnMatriz(int[][] matriz) {
 		List<Integer> numerosDeSmith = new ArrayList<>();
 
 		for (int[] fila : matriz) {
@@ -315,7 +315,7 @@ public class Problemas {
 	}
 
 	// Verifica si un número es un número de Smith.
-	public static boolean esNumeroDeSmith(int numero) {
+	public boolean esNumeroDeSmith(int numero) {
 		// Calcula la suma de los dígitos del número.
 		int sumaDigitos = sumarDigitos(numero);
 		// Calcula la suma de los dígitos de sus divisores primos.
@@ -326,7 +326,7 @@ public class Problemas {
 	}
 
 	// Suma los dígitos de un número.
-	public static int sumarDigitos(int numero) {
+	public int sumarDigitos(int numero) {
 		int suma = 0;
 
 		while (numero > 0) {
@@ -338,7 +338,7 @@ public class Problemas {
 	}
 
 	// Suma los dígitos de los divisores primos de un número.
-	public static int sumarDivisoresPrimos(int numero) {
+	public int sumarDivisoresPrimos(int numero) {
 		int suma = 0;
 
 		for (int i = 2; i <= numero; i++) {
@@ -352,7 +352,7 @@ public class Problemas {
 	}
 
 	// Verifica si un número es primo.
-	public static boolean esPrimo(int numero) {
+	public boolean esPrimo(int numero) {
 		if (numero <= 1) {
 			return false;
 		}
@@ -369,7 +369,7 @@ public class Problemas {
 
 	/////////////////////
 
-	public static List<Integer> encontrarNumerosDeSmithEnMatrizRecursivo(int[][] matriz, int fila, int columna) {
+	public List<Integer> encontrarNumerosDeSmithEnMatrizRecursivo(int[][] matriz, int fila, int columna) {
         List<Integer> numerosDeSmith = new ArrayList<>();
 
         // Caso base: cuando llegamos al final de la matriz
@@ -396,7 +396,7 @@ public class Problemas {
         return numerosDeSmith;
     }
 
-	public static int sumarDigitosRecursivo(int numero) {
+	public int sumarDigitosRecursivo(int numero) {
 		// Caso base: si el número tiene un solo dígito, se devuelve ese dígito.
 		if (numero < 10) {
 			return numero;
@@ -408,7 +408,7 @@ public class Problemas {
 	}
 	
 	// Calcula la suma de los dígitos de los divisores primos de un número de manera recursiva.
-	public static int sumarDivisoresPrimosRecursivo(int numero, int divisor, int suma) {
+	public int sumarDivisoresPrimosRecursivo(int numero, int divisor, int suma) {
 		// Caso base: cuando el número llega a 1, se devuelve la suma acumulada.
 		if (numero == 1) {
 			return suma;
@@ -425,7 +425,7 @@ public class Problemas {
 	}
 	
 	// Verifica si un número es primo de manera recursiva.
-	public static boolean esPrimoRecursivo(int numero, int divisor) {
+	public boolean esPrimoRecursivo(int numero, int divisor) {
 		// Caso base: si el número es menor o igual a 1, no es primo.
 		if (numero <= 1) {
 			return false;
@@ -446,7 +446,7 @@ public class Problemas {
 	}
 	
 	// Verifica si un número es un número de Smith de manera recursiva.
-	public static boolean esNumeroDeSmithRecursivo2(int numero) {
+	public boolean esNumeroDeSmithRecursivo2(int numero) {
 		// Calcula la suma de los dígitos del número y la suma de los dígitos de sus
 		// divisores primos utilizando las funciones recursivas previamente definidas.
 		int sumaDigitos = sumarDigitosRecursivo(numero);
