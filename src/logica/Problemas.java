@@ -296,7 +296,7 @@ public class Problemas {
 
 	}	
 
-	//////////////
+	
 
 	// Encuentra los números de Smith en una matriz y los almacena en una lista.
 	public List<Integer> encontrarNumerosDeSmithEnMatriz(int[][] matriz) {
@@ -455,5 +455,76 @@ public class Problemas {
 		// Compara si ambas sumas son iguales.
 		return sumaDigitos == sumaDivisoresPrimos;
 	}
+
+	public  void estrella(int filas, int columnas){
+        char[][] matriz = new char[filas][columnas];
+
+        // Llenar toda la matriz con vacios ' ' por defecto.
+        for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < columnas; j++) {
+                matriz[i][j] = ' ';
+            }
+        }
+
+        // Llenar el borde de la matriz con unos '1'.
+        for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < columnas; j++) {
+                if (i == 0 || i == filas - 1 || j == 0 || j == columnas - 1) {
+                    matriz[i][j] = '1';
+                }
+            }
+        }
+
+        int centroFila = filas / 2;
+        int centroColumna = columnas / 2;
+
+		// Cambios para izquiera arriba
+        for (int k = 0; k < centroFila-1; k++) {
+            for (int i = 1; i < centroFila-1; i++) {
+                for (int j = 1; j < centroColumna-k; j++) {
+                    matriz[i][j] = '1';
+                }
+                k++;
+            }
+        }
+		// Cambios para derecha arriba
+        for (int k = 1; k < centroFila-1; k++) {
+            for (int i = 1; i < centroFila-1; i++) {
+                for (int j = centroColumna+k; j < matriz[0].length-1; j++) {
+                    matriz[i][j] = '1';
+                }
+                k++;
+            }
+        }
+        // Cambios para izquierda abajo
+        for (int k = centroFila-2; k > 1; k--) {
+            for (int i = centroFila+1; i < matriz.length-1; i++) {
+                for (int j = 1; j < centroColumna-k; j++) {
+                    matriz[i][j] = '1';
+                }
+                k--;
+            }
+        }
+		// Cambios para derecha abajo
+        for (int k = centroFila-2; k > 1; k--) {
+            for (int i = centroFila+2; i < matriz.length-1; i++) {
+                for (int j = centroColumna+k; j < matriz[0].length-1; j++) {
+                    matriz[i][j] = '1';
+                }
+                k--;
+            }
+        }
+
+
+
+        // Imprimir la matriz resultante.
+        for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < columnas; j++) {
+                System.out.print(matriz[i][j] + " ");
+            }
+            System.out.println();
+        }
+
+    }
 	
 }
