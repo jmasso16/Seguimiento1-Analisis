@@ -120,5 +120,7 @@ public class Main {
         duration = (endTime - startTime) / 1000000; // Tiempo en milisegundos
 
         System.out.println("\t"+"Tiempo de ejecución problema 4.5 Recursivo: " + duration + " milisegundos");
+        
+        System.out.println("nH "+problemas.listarNumerosHambrientos2(30000));
 	}
 }

@@ -1,5 +1,6 @@
 package logica;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -575,7 +576,15 @@ public class Problemas {
 
     public  void estrella2(int filas, int columnas) {
         char[][] matriz = new char[filas][columnas];
+        
+        // Llenar toda la matriz con vacios ' ' por defecto.
+        for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < columnas; j++) {
+                matriz[i][j] = ' ';
+            }
+        }
 
+        // Lena los limites de la matriz con 1
         for (int i = 0; i < filas; i++) {
             for (int j = 0; j < columnas; j++) {
                 if (i == 0 || i == filas - 1 || j == 0 || j == columnas - 1) {
@@ -595,9 +604,66 @@ public class Problemas {
         // Imprimir la matriz resultante.
         for (int i = 0; i < filas; i++) {
             for (int j = 0; j < columnas; j++) {
-                System.out.print(matriz[i][j]);
+               		System.out.print(matriz[i][j] + " ");
             }
             System.out.println();
         }
     }
+    
+    public ArrayList<Integer> listarNumerosHambrientos(int n){
+    	ArrayList<Integer> listadoH = new ArrayList<>();
+    	int k = 1;
+    	String pi = ""+Math.PI;
+    	pi= pi.replace(".", "");
+    	
+    	for (int i = 5; i <= n; i++) {
+    		String potencia="";
+            BigInteger resultadoBigInteger = new BigInteger("2");
+            BigInteger resultado = resultadoBigInteger.pow(i);
+    		potencia = ""+resultado;
+    		if(potencia.contains(pi.substring(0, k))) {
+    			listadoH.add(i);
+    			k++;
+    			if(potencia.contains(pi.substring(0, k))) {
+        			listadoH.add(i);
+        			k++;
+        		}
+    		}
+			
+		}
+    	
+    	return listadoH;
+    }
+    
+    public ArrayList<Integer> listarNumerosHambrientos2(int n) {
+        ArrayList<Integer> listadoH = new ArrayList<>();
+        int k = 1;
+        String pi = "" + Math.PI;
+        pi = pi.replace(".", "");
+        int i = 5;
+        return listarNumerosHambrientosRecursiva(i,n, k, pi, listadoH);
+    }
+
+    private ArrayList<Integer> listarNumerosHambrientosRecursiva(int i,int n, int k, String pi, ArrayList<Integer> listadoH) {
+        if (i > n) {
+            return listadoH;
+        }
+        
+        String potencia = "";
+        BigInteger resultadoBigInteger = new BigInteger("2");
+        BigInteger resultado = resultadoBigInteger.pow(i);
+        potencia = "" + resultado;
+        
+        if (potencia.contains(pi.substring(0, k))) {
+            listadoH.add(i);
+            k++;
+            if (potencia.contains(pi.substring(0, k))) {
+                listadoH.add(i);
+                k++;
+            }
+        }
+        
+        return listarNumerosHambrientosRecursiva(i+1,n, k, pi, listadoH);
+    }
+
 }
