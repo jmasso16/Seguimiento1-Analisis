@@ -5,7 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import excepciones.NumeroImparException;
+import excepciones.ValorColumnasException;
 
+/**
+ * @author Juan Esteban Henao John Fredy Muñoz Julian Andres Masso
+ *
+ */
 public class Problemas {
 	/**
 	 * Metodo iterativo que llena los sectores de la matriz segun la estructura
@@ -195,9 +200,13 @@ public class Problemas {
 	 * 
 	 * @param n El parametro n define el tamaño de la matriz necesaria para
 	 *          almacenar los numeros segun dicha estructura
+	 * @return El metodo retorna la matriz llena segun el patron del problema
+	 * @throws NumeroImparException Es una excepcion propia para controlar que el
+	 *                              nuemro n ingresado cumpla con los requisitos del
+	 *                              problema, sea impar.
 	 */
-	public int[][] llenarMatrizCuatroDos(int n) throws NumeroImparException{
-		if(n%2 != 1) {
+	public int[][] llenarMatrizCuatroDos(int n) throws NumeroImparException {
+		if (n % 2 != 1) {
 			throw new NumeroImparException("El número n debe ser impar.");
 		}
 		int[][] matriz = new int[n][n];
@@ -225,14 +234,22 @@ public class Problemas {
 		return matriz;
 	}
 
+	/**
+	 * Este metodo es el encargado de validar y controlar debidamente que el valor
+	 * de n sea impar. Ademas prepara la matriz con el tamaño adecaudo para enviarla
+	 * al metodo recursivo llenarMatrizRecursiva() y posteriormente imprimirla
+	 * 
+	 * @param n
+	 * @throws NumeroImparException
+	 */
 	public void llenarMatrizCuatroDosRecursiva(int n) throws NumeroImparException {
 		if (n % 2 != 1) {
 			throw new NumeroImparException("El número n debe ser impar.");
 		}
-	
+
 		int[][] matriz = new int[n][n];
 		llenarMatrizRecursiva(matriz, n, 0, 0);
-	
+
 		// Imprimir la matriz (opcional)
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < n; j++) {
@@ -241,7 +258,7 @@ public class Problemas {
 			System.out.println();
 		}
 	}
-	
+
 	/**
 	 * Metodo iterativo que llena los sectores de la matriz segun la estructura
 	 * presentada en el Problema 4.2 Dicha estructura esta dada por lo siguiente:
@@ -271,7 +288,7 @@ public class Problemas {
 			// Si no es la primera columna
 			if (i > 0) {
 				// Inicializa una variable temporal para la potencia
-				int tempPotencia = n-1;
+				int tempPotencia = n - 1;
 				// Llena la matriz con potencias de 2 despues de la primera columna
 				for (int j = i / 2; j < matriz.length - (i / 2); j++) {
 					matriz[j][i] = (int) Math.pow(2, tempPotencia);
@@ -280,7 +297,7 @@ public class Problemas {
 				// Llama recursivamente a la función para la siguiente columna
 				llenarMatrizRecursiva(matriz, n, i + 1, tempPotencia);
 			} else {
-				 int tempPotencia = n-1;
+				int tempPotencia = n - 1;
 				// Llena la primera columna de la matriz con potencias de 2
 				for (int j = 0; j < matriz.length; j++) {
 					matriz[j][i] = (int) Math.pow(2, tempPotencia);
@@ -295,9 +312,7 @@ public class Problemas {
 			llenarMatrizRecursiva(matriz, n, i + 1, potencia);
 		}
 
-	}	
-
-	
+	}
 
 	// Encuentra los números de Smith en una matriz y los almacena en una lista.
 	public List<Integer> encontrarNumerosDeSmithEnMatriz(int[][] matriz) {
@@ -306,7 +321,7 @@ public class Problemas {
 		for (int[] fila : matriz) {
 			for (int numero : fila) {
 				// Verifica si el número no es primo y es un número de Smith.
-				if (!esPrimo(numero) && esNumeroDeSmith(numero)) {
+				if (numero > 0 && !esPrimo(numero) && esNumeroDeSmith(numero)) {
 					numerosDeSmith.add(numero);
 				}
 			}
@@ -367,35 +382,32 @@ public class Problemas {
 		return true;
 	}
 
-
-	/////////////////////
-
 	public List<Integer> encontrarNumerosDeSmithEnMatrizRecursivo(int[][] matriz, int fila, int columna) {
-        List<Integer> numerosDeSmith = new ArrayList<>();
+		List<Integer> numerosDeSmith = new ArrayList<>();
 
-        // Caso base: cuando llegamos al final de la matriz
-        if (fila >= matriz.length) {
-            return numerosDeSmith;
-        }
+		// Caso base: cuando llegamos al final de la matriz
+		if (fila >= matriz.length) {
+			return numerosDeSmith;
+		}
 
-        // Verifica si el número no es primo y es un número de Smith.
-        if (!esPrimoRecursivo(matriz[fila][columna], 2) && esNumeroDeSmithRecursivo2(matriz[fila][columna])) {
-            numerosDeSmith.add(matriz[fila][columna]);
-        }
+		// Verifica si el número no es primo y es un número de Smith.
+		if (!esPrimoRecursivo(matriz[fila][columna], 2) && esNumeroDeSmithRecursivo2(matriz[fila][columna])) {
+			numerosDeSmith.add(matriz[fila][columna]);
+		}
 
-        // Avanza a la siguiente columna o fila de manera recursiva
-        int nuevaFila = fila;
-        int nuevaColumna = columna + 1;
-        if (nuevaColumna >= matriz[0].length) {
-            nuevaFila++;
-            nuevaColumna = 0;
-        }
+		// Avanza a la siguiente columna o fila de manera recursiva
+		int nuevaFila = fila;
+		int nuevaColumna = columna + 1;
+		if (nuevaColumna >= matriz[0].length) {
+			nuevaFila++;
+			nuevaColumna = 0;
+		}
 
-        // Llamada recursiva para procesar el siguiente elemento de la matriz
-        numerosDeSmith.addAll(encontrarNumerosDeSmithEnMatrizRecursivo(matriz, nuevaFila, nuevaColumna));
+		// Llamada recursiva para procesar el siguiente elemento de la matriz
+		numerosDeSmith.addAll(encontrarNumerosDeSmithEnMatrizRecursivo(matriz, nuevaFila, nuevaColumna));
 
-        return numerosDeSmith;
-    }
+		return numerosDeSmith;
+	}
 
 	public int sumarDigitosRecursivo(int numero) {
 		// Caso base: si el número tiene un solo dígito, se devuelve ese dígito.
@@ -407,8 +419,9 @@ public class Problemas {
 			return numero % 10 + sumarDigitosRecursivo(numero / 10);
 		}
 	}
-	
-	// Calcula la suma de los dígitos de los divisores primos de un número de manera recursiva.
+
+	// Calcula la suma de los dígitos de los divisores primos de un número de manera
+	// recursiva.
 	public int sumarDivisoresPrimosRecursivo(int numero, int divisor, int suma) {
 		// Caso base: cuando el número llega a 1, se devuelve la suma acumulada.
 		if (numero == 1) {
@@ -424,246 +437,449 @@ public class Problemas {
 			return sumarDivisoresPrimosRecursivo(numero, divisor + 1, suma);
 		}
 	}
-	
+
 	// Verifica si un número es primo de manera recursiva.
 	public boolean esPrimoRecursivo(int numero, int divisor) {
 		// Caso base: si el número es menor o igual a 1, no es primo.
 		if (numero <= 1) {
 			return false;
 		}
-	
+
 		// Si el divisor al cuadrado es mayor que el número, el número es primo.
 		if (divisor * divisor > numero) {
 			return true;
 		}
-	
+
 		// Si el número es divisible por el divisor actual, no es primo.
 		if (numero % divisor == 0) {
 			return false;
 		}
-	
+
 		// Llamada recursiva para probar el siguiente divisor.
 		return esPrimoRecursivo(numero, divisor + 1);
 	}
-	
+
 	// Verifica si un número es un número de Smith de manera recursiva.
 	public boolean esNumeroDeSmithRecursivo2(int numero) {
 		// Calcula la suma de los dígitos del número y la suma de los dígitos de sus
 		// divisores primos utilizando las funciones recursivas previamente definidas.
 		int sumaDigitos = sumarDigitosRecursivo(numero);
 		int sumaDivisoresPrimos = sumarDivisoresPrimosRecursivo(numero, 2, 0);
-	
+
 		// Compara si ambas sumas son iguales.
 		return sumaDigitos == sumaDivisoresPrimos;
 	}
 
-	public  void estrella(int filas, int columnas){
-        char[][] matriz = new char[filas][columnas];
+	/**
+	 * Este metodo requiere que los valores ingresados para filas y columnas sean
+	 * IMPARES. Ademas el numero de filas DEBE ser mayor al de columnas. Si no
+	 * cumple estas condiciones se lanzaran segun sea el caso excepciones propias
+	 * para controlarlo El metodo luego de comprobar los requisitos inicializa la
+	 * matriz con ' ', posteriormente llena los bordes de esta con '1'
+	 * 
+	 * @param filas
+	 * @param columnas
+	 * @throws NumeroImparException , ValorColumnasException
+	 */
+	public void estrella(int filas, int columnas) throws NumeroImparException, ValorColumnasException {
 
-        // Llenar toda la matriz con vacios ' ' por defecto.
-        for (int i = 0; i < filas; i++) {
-            for (int j = 0; j < columnas; j++) {
-                matriz[i][j] = ' ';
-            }
-        }
+		if (filas % 2 != 1) {
+			throw new NumeroImparException("El número de filas debe ser impar.");
+		}
+		if (columnas % 2 != 1) {
+			throw new NumeroImparException("El número de columnas debe ser impar.");
+		}
 
-        // Llenar el borde de la matriz con unos '1'.
-        for (int i = 0; i < filas; i++) {
-            for (int j = 0; j < columnas; j++) {
-                if (i == 0 || i == filas - 1 || j == 0 || j == columnas - 1) {
-                    matriz[i][j] = '1';
-                }
-            }
-        }
+		if (columnas > filas) {
+			throw new ValorColumnasException("El número de columnas debe ser menor al de las filas.");
+		}
+		char[][] matriz = new char[filas][columnas];
+
+		// Llenar toda la matriz con vacios ' ' por defecto.
+		for (int i = 0; i < filas; i++) {
+			for (int j = 0; j < columnas; j++) {
+				matriz[i][j] = ' ';
+			}
+		}
+
+		// Llenar el borde de la matriz con unos '1'.
+		for (int i = 0; i < filas; i++) {
+			for (int j = 0; j < columnas; j++) {
+				if (i == 0 || i == filas - 1 || j == 0 || j == columnas - 1) {
+					matriz[i][j] = '1';
+				}
+			}
+		}
 
 		int centroFila = filas / 2;
-        int centroColumna = columnas / 2;
+		int centroColumna = columnas / 2;
 
-        // llena arriba
-       for (int k = 0; k < centroFila-1; k++) {
-            for (int i = 1; i < centroFila-1; i++) {
-                for (int j = 1; j < matriz[0].length-1; j++) {
-                    if(j < centroColumna-k){
-                        matriz[i][j] = '1';
-                    }
-                    if(j> centroColumna+k ){
-                        matriz[i][j] = '1';
-                    }
-                }
-                k++;
-            }
-        }
-        // llena abajo
-        for (int k = centroFila-2; k > 1; k--) {
-            for (int i = centroFila+1; i < matriz.length-1; i++) {
-                for (int j = 1; j < matriz[0].length-1; j++) {
-                    if(j < centroColumna-k){
-                        matriz[i][j] = '1';
-                    }
-                    if(j> centroColumna+k ){
-                        matriz[i][j] = '1';
-                    }
-                }
-                k--;
-            }
-        }
-
-
-
-        // Imprimir la matriz resultante.
-        for (int i = 0; i < filas; i++) {
-            for (int j = 0; j < columnas; j++) {
-               		System.out.print(matriz[i][j] + " ");
-            }
-            System.out.println();
-        }
-		
-    }
-	
-	public  void llenarArribaRecursivo(char[][] matriz, int centroFila, int centroColumna, int k, int i, int j) {
-        // Caso base: detener la recursión cuando k sea mayor o igual a centroFila.
-        if (k >= centroFila) {
-            return;
-        }
-
-        // Llenar la parte superior de la matriz en la posición actual (i, j).
-
-        //parte izquierda
-        if(j < centroColumna-k){
-            matriz[i][j] = '1';
-        }
-
-        //parte derecha
-        if(j> centroColumna+k ){
-            matriz[i][j] = '1';
-        }
-
-        // Llamar recursivamente para la siguiente posición.
-        if (j < matriz[0].length - 2) {
-            llenarArribaRecursivo(matriz, centroFila, centroColumna, k, i, j + 1);
-        } else {
-            // Cambiar de fila y reiniciar j al principio de la fila.
-            llenarArribaRecursivo(matriz, centroFila, centroColumna, k+1, i + 1, 1);
-        }
-    }
-
-    public  void llenarAbajoRecursivo(char[][] matriz, int centroFila, int centroColumna, int k, int i, int j) {
-        // Caso base: detener la recursión cuando k sea menor a 0.
-        if (k < 0) {
-            return;
-        }
-
-        // Llenar la parte inferior de la matriz en la posición actual (i, j).
-
-        //parte izquierda
-        if(j < centroColumna-k){
-            matriz[i][j] = '1';
-        }
-
-        //parte derecha
-        if(j> centroColumna+k ){
-            matriz[i][j] = '1';
-        }
-
-        // Llamar recursivamente para la siguiente posición.
-        if (j < matriz[0].length - 2) {
-            llenarAbajoRecursivo(matriz, centroFila, centroColumna, k, i, j + 1);
-        } else {
-            // Cambiar de fila y reiniciar j al principio de la fila.
-            llenarAbajoRecursivo(matriz, centroFila, centroColumna, k-1, i + 1, 1);
-        }
-    }
-
-    public  void estrella2(int filas, int columnas) {
-        char[][] matriz = new char[filas][columnas];
-        
-        // Llenar toda la matriz con vacios ' ' por defecto.
-        for (int i = 0; i < filas; i++) {
-            for (int j = 0; j < columnas; j++) {
-                matriz[i][j] = ' ';
-            }
-        }
-
-        // Lena los limites de la matriz con 1
-        for (int i = 0; i < filas; i++) {
-            for (int j = 0; j < columnas; j++) {
-                if (i == 0 || i == filas - 1 || j == 0 || j == columnas - 1) {
-                    matriz[i][j] = '1';
-                }
-            }
-        }
-
-
-        int centroFila = filas / 2;
-        int centroColumna = columnas / 2;
-
-        // Llamar a las funciones recursivas para llenar la parte superior e inferior.
-        llenarArribaRecursivo(matriz, centroFila - 1, centroColumna, 0, 1, 1);
-        llenarAbajoRecursivo(matriz, centroFila - 2, centroColumna, centroFila - 2, centroFila + 1, 1);
-
-        // Imprimir la matriz resultante.
-        for (int i = 0; i < filas; i++) {
-            for (int j = 0; j < columnas; j++) {
-               		System.out.print(matriz[i][j] + " ");
-            }
-            System.out.println();
-        }
-    }
-    
-    public ArrayList<Integer> listarNumerosHambrientos(int n){
-    	ArrayList<Integer> listadoH = new ArrayList<>();
-    	int k = 1;
-    	String pi = ""+Math.PI;
-    	pi= pi.replace(".", "");
-    	
-    	for (int i = 5; i <= n; i++) {
-    		String potencia="";
-            BigInteger resultadoBigInteger = new BigInteger("2");
-            BigInteger resultado = resultadoBigInteger.pow(i);
-    		potencia = ""+resultado;
-    		if(potencia.contains(pi.substring(0, k))) {
-    			listadoH.add(i);
-    			k++;
-    			if(potencia.contains(pi.substring(0, k))) {
-        			listadoH.add(i);
-        			k++;
-        		}
-    		}
-			
+		// llena arriba
+		for (int k = 0; k < centroFila - 1; k++) {
+			for (int i = 1; i < centroFila - 1; i++) {
+				for (int j = 1; j < matriz[0].length - 1; j++) {
+					if (j < centroColumna - k) {
+						matriz[i][j] = '1';
+					}
+					if (j > centroColumna + k) {
+						matriz[i][j] = '1';
+					}
+				}
+				k++;
+			}
 		}
-    	
-    	return listadoH;
-    }
-    
-    public ArrayList<Integer> listarNumerosHambrientos2(int n) {
-        ArrayList<Integer> listadoH = new ArrayList<>();
-        int k = 1;
-        String pi = "" + Math.PI;
-        pi = pi.replace(".", "");
-        int i = 5;
-        return listarNumerosHambrientosRecursiva(i,n, k, pi, listadoH);
-    }
+		// llena abajo
+		for (int k = centroFila - 2; k > 1; k--) {
+			for (int i = centroFila + 1; i < matriz.length - 1; i++) {
+				for (int j = 1; j < matriz[0].length - 1; j++) {
+					if (j < centroColumna - k) {
+						matriz[i][j] = '1';
+					}
+					if (j > centroColumna + k) {
+						matriz[i][j] = '1';
+					}
+				}
+				k--;
+			}
+		}
 
-    private ArrayList<Integer> listarNumerosHambrientosRecursiva(int i,int n, int k, String pi, ArrayList<Integer> listadoH) {
-        if (i > n) {
-            return listadoH;
-        }
-        
-        String potencia = "";
-        BigInteger resultadoBigInteger = new BigInteger("2");
-        BigInteger resultado = resultadoBigInteger.pow(i);
-        potencia = "" + resultado;
-        
-        if (potencia.contains(pi.substring(0, k))) {
-            listadoH.add(i);
-            k++;
-            if (potencia.contains(pi.substring(0, k))) {
-                listadoH.add(i);
-                k++;
-            }
-        }
-        
-        return listarNumerosHambrientosRecursiva(i+1,n, k, pi, listadoH);
-    }
+		// Imprimir la matriz resultante.
+		for (int i = 0; i < filas; i++) {
+			for (int j = 0; j < columnas; j++) {
+				System.out.print(matriz[i][j] + " ");
+			}
+			System.out.println();
+		}
+
+	}
+	
+	/**
+	 * Este metodo requiere que los valores ingresados para filas y columnas sean
+	 * IMPARES. Ademas el numero de filas DEBE ser mayor al de columnas. Si no
+	 * cumple estas condiciones se lanzaran segun sea el caso excepciones propias
+	 * para controlarlo El metodo luego de comprobar los requisitos inicializa la
+	 * matriz con ' ', posteriormente llena los bordes de esta con '1'
+	 * @param filas
+	 * @param columnas
+	 * @throws NumeroImparException
+	 * @throws ValorColumnasException
+	 */
+	public void estrellaRecursivo(int filas, int columnas) throws NumeroImparException, ValorColumnasException {
+		
+		
+		if (filas % 2 != 1) {
+			throw new NumeroImparException("El número de filas debe ser impar.");
+		}
+		if (columnas % 2 != 1) {
+			throw new NumeroImparException("El número de columnas debe ser impar.");
+		}
+
+		if (columnas > filas) {
+			throw new ValorColumnasException("El número de columnas debe ser menor al de las filas.");
+		}
+		
+		char[][] matriz = new char[filas][columnas];
+
+		// Llenar toda la matriz con vacios ' ' por defecto.
+		for (int i = 0; i < filas; i++) {
+			for (int j = 0; j < columnas; j++) {
+				matriz[i][j] = ' ';
+			}
+		}
+
+		// Lena los limites de la matriz con 1
+		for (int i = 0; i < filas; i++) {
+			for (int j = 0; j < columnas; j++) {
+				if (i == 0 || i == filas - 1 || j == 0 || j == columnas - 1) {
+					matriz[i][j] = '1';
+				}
+			}
+		}
+
+		int centroFila = filas / 2;
+		int centroColumna = columnas / 2;
+
+		// Llamar a las funciones recursivas para llenar la parte superior e inferior.
+		llenarArribaRecursivo(matriz, centroFila - 1, centroColumna, 0, 1, 1);
+		llenarAbajoRecursivo(matriz, centroFila - 2, centroColumna, centroFila - 2, centroFila + 1, 1);
+
+		// Imprimir la matriz resultante.
+		for (int i = 0; i < filas; i++) {
+			for (int j = 0; j < columnas; j++) {
+				System.out.print(matriz[i][j] + " ");
+			}
+			System.out.println();
+		}
+	}
+
+	/**
+	 * @param matriz
+	 * @param centroFila
+	 * @param centroColumna
+	 * @param k
+	 * @param i
+	 * @param j
+	 */
+	public void llenarArribaRecursivo(char[][] matriz, int centroFila, int centroColumna, int k, int i, int j) {
+		// Caso base: detener la recursión cuando k sea mayor o igual a centroFila.
+		if (k >= centroFila) {
+			return;
+		}
+
+		// Llenar la parte superior de la matriz en la posición actual (i, j).
+
+		// parte izquierda
+		if (j < centroColumna - k) {
+			matriz[i][j] = '1';
+		}
+
+		// parte derecha
+		if (j > centroColumna + k) {
+			matriz[i][j] = '1';
+		}
+
+		// Llamar recursivamente para la siguiente posición.
+		if (j < matriz[0].length - 2) {
+			llenarArribaRecursivo(matriz, centroFila, centroColumna, k, i, j + 1);
+		} else {
+			// Cambiar de fila y reiniciar j al principio de la fila.
+			llenarArribaRecursivo(matriz, centroFila, centroColumna, k + 1, i + 1, 1);
+		}
+	}
+
+	/**
+	 * @param matriz
+	 * @param centroFila
+	 * @param centroColumna
+	 * @param k
+	 * @param i
+	 * @param j
+	 */
+	public void llenarAbajoRecursivo(char[][] matriz, int centroFila, int centroColumna, int k, int i, int j) {
+		// Caso base: detener la recursión cuando k sea menor a 0.
+		if (k < 0) {
+			return;
+		}
+
+		// Llenar la parte inferior de la matriz en la posición actual (i, j).
+
+		// parte izquierda
+		if (j < centroColumna - k) {
+			matriz[i][j] = '1';
+		}
+
+		// parte derecha
+		if (j > centroColumna + k) {
+			matriz[i][j] = '1';
+		}
+
+		// Llamar recursivamente para la siguiente posición.
+		if (j < matriz[0].length - 2) {
+			llenarAbajoRecursivo(matriz, centroFila, centroColumna, k, i, j + 1);
+		} else {
+			// Cambiar de fila y reiniciar j al principio de la fila.
+			llenarAbajoRecursivo(matriz, centroFila, centroColumna, k - 1, i + 1, 1);
+		}
+	}
+
+
+
+	/**
+	 * Metodo para encontrar los numero hambrientos dentro de la matriz de entrada
+	 * 
+	 * @param matriz
+	 * @return Arreglo con los numeros hambrientos encontrados
+	 */
+	public int[] encontrarNumerosCoincidentes(int[][] matriz) {
+
+		List<Integer> numerosCoincidentesList = new ArrayList<>();
+		List<Integer> numerosEnArrayList = new ArrayList<>();
+		numerosEnArrayList = obtenerEnteroMayor(matriz);
+
+		for (int fila = 0; fila < matriz.length; fila++) {
+			for (int columna = 0; columna < matriz[fila].length; columna++) {
+				int numero = matriz[fila][columna];
+				if (numerosEnArrayList.contains(numero)) {
+					numerosCoincidentesList.add(numero);
+				}
+			}
+		}
+
+		// Convierte la lista de números coincidentes en un arreglo
+		int[] numerosCoincidentes = new int[numerosCoincidentesList.size()];
+		for (int i = 0; i < numerosCoincidentesList.size(); i++) {
+			numerosCoincidentes[i] = numerosCoincidentesList.get(i);
+		}
+
+		return numerosCoincidentes;
+	}
+
+	/**
+	 * Metodo para encontrar los numero hambrientos dentro de la matriz de entrada
+	 * De forma recursiva
+	 * 
+	 * @param matriz
+	 * @return Arreglo con los numeros hambrientos encontrados
+	 */
+	public int[] encontrarNumerosCoincidentesRecursivo(int[][] matriz) {
+		List<Integer> numerosCoincidentesList = new ArrayList<>();
+		List<Integer> numerosEnArrayList = new ArrayList<>();
+		numerosEnArrayList = obtenerEnteroMayor(matriz);
+
+		for (int fila = 0; fila < matriz.length; fila++) {
+			for (int columna = 0; columna < matriz[fila].length; columna++) {
+				int numero = matriz[fila][columna];
+				if (numerosEnArrayList.contains(numero)) {
+					numerosCoincidentesList.add(numero);
+				}
+			}
+		}
+
+		// Convierte la lista de números coincidentes en un arreglo
+		int[] numerosCoincidentes = new int[numerosCoincidentesList.size()];
+		for (int i = 0; i < numerosCoincidentesList.size(); i++) {
+			numerosCoincidentes[i] = numerosCoincidentesList.get(i);
+		}
+
+		return numerosCoincidentes;
+	}
+
+	/**
+	 * Metodo para encontrar el numero mayor de la matriz, para saber hasta que
+	 * numero se deben generar los numero hambrientos
+	 * 
+	 * @param matriz
+	 * @return UN listado con los numero hambrientos desde 5 hasta maximo
+	 */
+	public ArrayList<Integer> obtenerEnteroMayor(int[][] matriz) {
+
+		int maximo = matriz[0][0];
+
+		for (int fila = 0; fila < matriz.length; fila++) {
+			for (int columna = 0; columna < matriz[fila].length; columna++) {
+				if (matriz[fila][columna] > maximo) {
+					maximo = matriz[fila][columna];
+				}
+			}
+		}
+
+		return listarNumerosHambrientos(maximo);
+	}
+
+	/**
+	 * Metodo para encontrar el numero mayor de la matriz, para saber hasta que
+	 * numero se deben generar los numero hambrientos
+	 * 
+	 * @param matriz
+	 * @return UN listado con los numero hambrientos desde 5 hasta maximo
+	 */
+	public ArrayList<Integer> obtenerEnteroMayorRecursivo(int[][] matriz) {
+
+		int maximo = matriz[0][0];
+
+		for (int fila = 0; fila < matriz.length; fila++) {
+			for (int columna = 0; columna < matriz[fila].length; columna++) {
+				if (matriz[fila][columna] > maximo) {
+					maximo = matriz[fila][columna];
+				}
+			}
+		}
+
+		return listarNumerosHambrientosRecursivo(maximo);
+	}
+
+	/**
+	 * Metod que lista los numero hambrientos que existen entre 5 y n
+	 * 
+	 * @param n es el numero maximo de la amtriz y da el limite superior al metodo
+	 * @return Listado con los numeros hambrientos dentro del rango
+	 */
+	public ArrayList<Integer> listarNumerosHambrientos(int n) {
+		ArrayList<Integer> listadoH = new ArrayList<>();
+		int k = 1;
+		String pi = "" + Math.PI;
+		pi = pi.replace(".", "");
+
+		for (int i = 5; i <= n; i++) {
+			String potencia = "";
+			BigInteger resultadoBigInteger = new BigInteger("2");
+			BigInteger resultado = resultadoBigInteger.pow(i);
+			potencia = "" + resultado;
+			if (potencia.contains(pi.substring(0, k))) {
+				listadoH.add(i);
+				k++;
+				if (potencia.contains(pi.substring(0, k))) {
+					listadoH.add(i);
+					k++;
+				}
+			}
+
+		}
+
+		return listadoH;
+	}
+
+	/**
+	 * Metodo que prepara los valores necesarios para llamar el metodo recursivo que
+	 * genera el listado de numeros hambrientos
+	 * 
+	 * @param n
+	 * @return
+	 */
+	public ArrayList<Integer> listarNumerosHambrientosRecursivo(int n) {
+		ArrayList<Integer> listadoH = new ArrayList<>();
+		int k = 1;
+		String pi = "" + Math.PI;
+		pi = pi.replace(".", "");
+		int i = 5;
+		return listarNumerosHambrientosRecursiva(i, n, k, pi, listadoH);
+	}
+
+	/**
+	 * Metodo que lista los numeros recursivos dentro del rango de i y n
+	 * 
+	 * @param i        numero que indica el limite inferior para el metodo
+	 * @param n        numero que indica el limite superior para el metodo
+	 * @param k        indica el kesimo numero hambriento
+	 * @param pi       contiene los digitos del numero pi
+	 * @param listadoH es el listado que va a ir llenando con los numero hambrientos
+	 * @return El listado generado
+	 */
+	private ArrayList<Integer> listarNumerosHambrientosRecursiva(int i, int n, int k, String pi,
+			ArrayList<Integer> listadoH) {
+		if (i > n) {
+			return listadoH;
+		}
+
+		String potencia = "";
+		BigInteger resultadoBigInteger = new BigInteger("2");
+		BigInteger resultado = resultadoBigInteger.pow(i);
+		potencia = "" + resultado;
+
+		if (potencia.contains(pi.substring(0, k))) {
+			listadoH.add(i);
+			k++;
+			if (potencia.contains(pi.substring(0, k))) {
+				listadoH.add(i);
+				k++;
+			}
+		}
+
+		return listarNumerosHambrientosRecursiva(i + 1, n, k, pi, listadoH);
+	}
+
+	/**
+	 * Metod que imprime el resultado del arreglo para el problema 4.3 tanto
+	 * iterativo como recursivo
+	 * 
+	 * @param arreglo
+	 */
+	public void impirmirContenidoArreglo(int[] arreglo) {
+		System.out.println("Contenido arreglo Problema 4.3 Numeros Hambrientos");
+		for (int i = 0; i < arreglo.length; i++) {
+			System.out.print(" " + arreglo[i]);
+		}
+		System.out.println();
+	}
 
 }
